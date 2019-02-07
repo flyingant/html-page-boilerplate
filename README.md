@@ -20,7 +20,7 @@ yarn or npm
 
 ## Versioning
 
-1.0.0 (last update: 2019-01-07)
+1.0.1 (last update: 2019-02-07)
 
 ## Developers
 
