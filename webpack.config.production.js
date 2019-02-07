@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const extractCustomerStyle = new ExtractTextPlugin('style.css');
-const extractLib = new ExtractTextPlugin('lib.css');
+const extractCSSLib = new ExtractTextPlugin('lib.css');
 
 module.exports = {
 
@@ -14,26 +14,52 @@ module.exports = {
     bundle: './src/index.js'
   },
 
+  mode: 'production',
+
   module: {
     rules: [
       {
-        enforce: 'pre',
         test: /\.js$/,
-        exclude: /node_modules/,
-        use: 'eslint-loader' 
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['env']
+          }
+        }
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: 'babel-loader'
+        use: ["babel-loader", "eslint-loader"]
       },
       {
         test: /\.(png|jpg|gif|ico|ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-        use: ['file-loader'],
+        use: [
+          {
+            loader: 'file-loader',
+            options: {},
+          },
+        ]
+      },
+      {
+        test: /\.(png|jpg|gif|ico|ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+        use: [
+          {
+            loader: 'url-loader', // works like file loader but can return a DataURL if the file is smaller than a byte limit.
+            options: {
+              limit: 8192
+            },
+          },
+        ]
+      },
+      {
+        test: /\.jsson$/,
+        use: ["json-loader"]
       },
       {
         test: /\.scss$/,
-        include: path.resolve(__dirname, "src"),
+        include: path.resolve(__dirname, "src/scss"),
         loader: extractCustomerStyle.extract({
             fallback: 'style-loader',
             use: ['css-loader', 'sass-loader']
@@ -41,7 +67,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: extractLib.extract({
+        use: extractCSSLib.extract({
           fallback: "style-loader",
           use: ['css-loader']
         })
@@ -54,24 +80,21 @@ module.exports = {
   },
 
   output: {
-    publicPath: './',
+    publicPath: '/',
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.min.js'
   },
 
   plugins: [
     new CleanWebpackPlugin(['dist']),
-    new webpack.optimize.UglifyJsPlugin({
-      comments: false,
-      sourceMap: true, 
-      minimize: true 
-    }),
-    extractLib,
+    extractCSSLib,
     extractCustomerStyle,
     new HtmlWebpackPlugin({
       title: 'Web Page',
-      template: 'src/index.template.html'
+      template: 'src/templates/index.html'
     }),
-    new CopyWebpackPlugin([{from: './assets', to: './assets'}])
+    new CopyWebpackPlugin([
+      {from: './src/assets', to: './assets'}
+    ])
   ]
 };

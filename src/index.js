@@ -1,6 +1,5 @@
-import '../css/main.css';
-import './style.scss';
-
-setTimeout(() => {
-  alert('Hello World')
-}, 1000);
+// CSS
+import './css/common.css';
+import './scss/style.scss';
+// JS
+import './js/main';
