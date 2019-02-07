@@ -1,6 +1,6 @@
 # HTML page boilerplate
 
-HTML page boilerplate is the boilerplate to help me building a html page quickly
+HTML page boilerplate is the boilerplate to help me building a html page quickly with the help by webpack and scss.
 
 ## Getting Started
 
