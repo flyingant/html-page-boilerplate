@@ -24,7 +24,7 @@ yarn or npm
 
 ## Developers
 
-MaYi (WCL) <mayi@wiredcraft.com>
+MaYi (WCL) <liucheng@flyingant.me>
 
 ## Acknowledgments
 
