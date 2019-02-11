@@ -54,7 +54,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.jsson$/,
+        test: /\.json$/,
         use: ["json-loader"]
       },
       {
