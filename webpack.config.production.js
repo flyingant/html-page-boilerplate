@@ -4,9 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-
 const extractCustomerStyle = new ExtractTextPlugin('style.css');
-const extractCSSLib = new ExtractTextPlugin('lib.css');
+const extractTailwindCSS = new ExtractTextPlugin('tailwind.css');
 
 module.exports = {
 
@@ -31,7 +30,10 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ["babel-loader", "eslint-loader"]
+        use: [
+          'babel-loader', 
+          'eslint-loader'
+        ]
       },
       {
         test: /\.(png|jpg|gif|ico|ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
@@ -55,21 +57,31 @@ module.exports = {
       },
       {
         test: /\.json$/,
-        use: ["json-loader"]
+        use: [
+          'json-loader'
+        ]
       },
       {
         test: /\.scss$/,
         include: path.resolve(__dirname, "src/scss"),
         loader: extractCustomerStyle.extract({
             fallback: 'style-loader',
-            use: ['css-loader', 'sass-loader']
+            use: [
+              'css-loader',
+              'postcss-loader',
+              'sass-loader'
+          ]
         })
       },
       {
         test: /\.css$/,
-        use: extractCSSLib.extract({
+        include: path.resolve(__dirname, "src/css"),
+        use: extractTailwindCSS.extract({
           fallback: "style-loader",
-          use: ['css-loader']
+          use: [
+            'css-loader',
+            'postcss-loader'
+          ]
         })
       },
     ]
@@ -87,10 +99,10 @@ module.exports = {
 
   plugins: [
     new CleanWebpackPlugin(['dist']),
-    extractCSSLib,
+    extractTailwindCSS,
     extractCustomerStyle,
     new HtmlWebpackPlugin({
-      title: 'Web Page',
+      title: 'Home',
       template: 'src/templates/index.html'
     }),
     new CopyWebpackPlugin([

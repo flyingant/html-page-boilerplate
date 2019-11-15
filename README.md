@@ -21,6 +21,7 @@ yarn or npm
 ## Versioning
 
 1.0.1 (last update: 2019-02-07)
+1.1.0 (last update: 2019-11-15) ### Add a CSS framework called Tailwind https://tailwindcss.com/
 
 ## Developers
 

@@ -54,16 +54,21 @@ module.exports = {
       },
       {
         test: /\.scss$/,
+        include: path.resolve(__dirname, "src/scss"),
         use: [
           "style-loader",
-          "css-loader", "sass-loader"
+          "css-loader", 
+          "postcss-loader",
+          "sass-loader"
         ]
       },
       {
         test: /\.css$/,
+        include: path.resolve(__dirname, "src/css"),
         use: [
           "style-loader",
-          "css-loader"
+          "css-loader",
+          "postcss-loader"
         ]
       },
     ]
@@ -86,7 +91,7 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Web Page',
+      title: 'Home',
       template: 'src/templates/index.html'
     }),
     new CopyWebpackPlugin([
