@@ -14,19 +14,25 @@ module.exports = {
   module: {
     rules: [
       {
+        enforce: 'pre',
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+      },
+      {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env']
-          }
-        }
+            presets: ['env'],
+          },
+        },
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ["babel-loader", "eslint-loader"]
+        use: ['babel-loader', 'eslint-loader'],
       },
       {
         test: /\.(png|jpg|gif|ico|ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
@@ -79,6 +85,7 @@ module.exports = {
   },
 
   devServer: {
+    historyApiFallback: true,
     contentBase: '/dist/',
     port: 8080
   },
@@ -91,7 +98,7 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Home',
+      title: 'HTML Boilerplate',
       template: 'src/templates/index.html'
     }),
     new CopyWebpackPlugin([

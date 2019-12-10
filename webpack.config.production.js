@@ -23,17 +23,14 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env']
-          }
-        }
+            presets: ['env'],
+          },
+        },
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: [
-          'babel-loader', 
-          'eslint-loader'
-        ]
+        use: ['babel-loader'],
       },
       {
         test: /\.(png|jpg|gif|ico|ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
@@ -102,7 +99,7 @@ module.exports = {
     extractTailwindCSS,
     extractCustomerStyle,
     new HtmlWebpackPlugin({
-      title: 'Home',
+      title: 'HTML Boilerplate',
       template: 'src/templates/index.html'
     }),
     new CopyWebpackPlugin([
