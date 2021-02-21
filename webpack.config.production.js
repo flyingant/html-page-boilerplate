@@ -1,11 +1,10 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const extractCustomerStyle = new ExtractTextPlugin('style.css');
-const extractTailwindCSS = new ExtractTextPlugin('tailwind.css');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
 
@@ -59,27 +58,13 @@ module.exports = {
         ]
       },
       {
-        test: /\.scss$/,
-        include: path.resolve(__dirname, "src/scss"),
-        loader: extractCustomerStyle.extract({
-            fallback: 'style-loader',
-            use: [
-              'css-loader',
-              'postcss-loader',
-              'sass-loader'
-          ]
-        })
-      },
-      {
-        test: /\.css$/,
-        include: path.resolve(__dirname, "src/css"),
-        use: extractTailwindCSS.extract({
-          fallback: "style-loader",
-          use: [
-            'css-loader',
-            'postcss-loader'
-          ]
-        })
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          'sass-loader'
+        ],
       },
     ]
   },
@@ -94,16 +79,27 @@ module.exports = {
     filename: 'bundle.min.js'
   },
 
+
+  optimization: {
+    minimizer: [
+      `...`,
+      new CssMinimizerPlugin(),
+    ],
+  },
+
   plugins: [
-    new CleanWebpackPlugin(['dist']),
-    extractTailwindCSS,
-    extractCustomerStyle,
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'style.css'
+    }),
     new HtmlWebpackPlugin({
       title: 'HTML Boilerplate',
       template: 'src/templates/index.html'
     }),
-    new CopyWebpackPlugin([
-      {from: './src/assets', to: './assets'}
-    ])
+    new CopyWebpackPlugin({
+      patterns: [
+        {from: './src/assets', to: './assets'},
+      ],
+    })
   ]
 };
